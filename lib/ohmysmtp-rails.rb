@@ -1,15 +1,58 @@
 require 'action_mailer'
+require 'httparty'
+require 'uri'
+require 'json'
+require 'ohmysmtp-rails/version'
 require 'ohmysmtp-rails/railtie' if defined? Rails
+
+require 'pry'
 
 module OhMySMTP
   class DeliveryMethod
-    def initialize(params)
-      # ???
+    attr_accessor :settings
+
+    def initialize(values)
+      check_api_token(values)
+      self.settings = {}.merge!(values)
     end
 
     def deliver!(mail)
-      ## oms http call goes here
-      ## plus hooks before_send and after_send hooks
+      check_delivery_params(mail)
+      result = HTTParty.post('https://app.ohmysmtp.com/api/v1/send',
+        body: {
+          from: mail.From,
+          to: mail.To,
+          subject: mail.Subject
+          # TODO: textbody, htmlbody,cc, bcc, replyto
+        }.to_json,
+        headers: {
+          'User-Agent' => 'OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}',
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json',
+          'Ohmysmtp-Server-Token' => settings[:api_token]
+        })
+
+      handle_response(result)
+    end
+
+    private
+
+    def check_api_token(values)
+      return if values[:api_token].present?
+
+      raise ArgumentError, 'OhMySMTP API token is not set'
+    end
+
+    def check_delivery_params(mail)
+      return unless mail.From.nil?
+
+      raise ArgumentError, 'A from address is required when sending an email'
+    end
+
+    def handle_response(result)
+      return unless result.code != 200
+
+      raise result['error']
     end
   end
 end

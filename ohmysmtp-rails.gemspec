@@ -29,5 +29,11 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency('actionmailer', ">= 3.0.0")
 
+  spec.add_dependency('httparty', '>= 0.18.1')
+
+  spec.add_development_dependency('byebug')
+
+  spec.add_development_dependency('pry')
+
   spec.add_development_dependency "sqlite3"
 end

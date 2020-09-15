@@ -35,10 +35,16 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
-  config.action_mailer.delivery_method = :test
+  config.action_mailer.delivery_method = :ohmysmtp
+  config.action_mailer.ohmysmtp_settings = {
+    api_token: Rails.application.credentials.ohmysmtp_api_token
+  }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
