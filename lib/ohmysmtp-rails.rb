@@ -5,9 +5,8 @@ require 'json'
 require 'ohmysmtp-rails/version'
 require 'ohmysmtp-rails/railtie' if defined? Rails
 
-require 'pry'
-
 module OhMySMTP
+  # OhMySMTP ActionMailer delivery method
   class DeliveryMethod
     attr_accessor :settings
 
@@ -18,19 +17,24 @@ module OhMySMTP
 
     def deliver!(mail)
       check_delivery_params(mail)
-      result = HTTParty.post('https://app.ohmysmtp.com/api/v1/send',
+      result = HTTParty.post(
+        'https://app.ohmysmtp.com/api/v1/send',
         body: {
-          from: mail.From,
-          to: mail.To,
-          subject: mail.Subject
-          # TODO: textbody, htmlbody,cc, bcc, replyto
+          from: mail.from.join(','),
+          to: mail.to.join(','),
+          subject: mail.subject,
+          htmlbody: mail.body,
+          cc: mail.cc&.join(','),
+          bcc: mail.bcc&.join(','),
+          replyto: mail.reply_to
         }.to_json,
         headers: {
-          'User-Agent' => 'OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}',
+          'User-Agent' => "OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}",
           'Accept' => 'application/json',
           'Content-Type' => 'application/json',
           'Ohmysmtp-Server-Token' => settings[:api_token]
-        })
+        }
+      )
 
       handle_response(result)
     end
@@ -44,9 +48,9 @@ module OhMySMTP
     end
 
     def check_delivery_params(mail)
-      return unless mail.From.nil?
+      return unless mail.from.nil? || mail.to.nil?
 
-      raise ArgumentError, 'A from address is required when sending an email'
+      raise ArgumentError, 'Missing to or from address in email'
     end
 
     def handle_response(result)

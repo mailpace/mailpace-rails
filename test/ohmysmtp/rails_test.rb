@@ -16,22 +16,30 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
     assert_equal ActionMailer::Base.ohmysmtp_settings[:api_token], 'api-token'
   end
 
-  test 'raises exception when trying to send emails' do
+  test 'raises RuntimeError when trying to send emails to real endpoint' do
     t = TestMailer.welcome_email
+    # This will trigger the real endpoint and fail with an API token error
+    # TODO: mock API endpoint
     assert_raise(RuntimeError) { t.deliver! }
   end
 
-  test 'raises exception if no api token set' do
+  test 'raises ArgumentError if no api token set' do
     ActionMailer::Base.ohmysmtp_settings = { }
     t = TestMailer.welcome_email
     assert_raise(ArgumentError) { t.deliver! }
   end
 
-  test 'raises exception if no from address in email' do
+  test 'raises ArgumentError if no from address in email' do
     t = TestMailer.welcome_email
-
-    binding.pry
+    t.from = nil
     assert_raise(ArgumentError) { t.deliver! }
   end
 
+  test 'raises ArgumentError if no to address in email' do
+    t = TestMailer.welcome_email
+    t.to = nil
+    assert_raise(ArgumentError) { t.deliver! }
+  end
+
+  # TODO: Test complex emails with replyto, bcc, cc, subject, from, to etc.
 end
