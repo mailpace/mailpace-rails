@@ -23,7 +23,7 @@ module OhMySMTP
           from: mail.from.join(','),
           to: mail.to.join(','),
           subject: mail.subject,
-          htmlbody: mail.body,
+          htmlbody: mail.body.to_s,
           cc: mail.cc&.join(','),
           bcc: mail.bcc&.join(','),
           replyto: mail.reply_to
@@ -56,7 +56,9 @@ module OhMySMTP
     def handle_response(result)
       return unless result.code != 200
 
-      raise result['error']
+      # TODO: Improved error handling
+      res = result.parsed_response
+      raise res['error']&.to_s || res['errors']&.to_s
     end
   end
 end
