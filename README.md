@@ -1,6 +1,7 @@
 # OhMySMTP::Rails
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Gem Version](https://badge.fury.io/rb/ohmysmtp-rails.svg)](https://badge.fury.io/rb/ohmysmtp-rails)
 
 
 [OhMySMTP](https://ohmysmtp.com) lets you send transactional emails from your app over an easy to use API.
