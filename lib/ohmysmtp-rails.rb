@@ -23,7 +23,8 @@ module OhMySMTP
           from: mail.from.join(','),
           to: mail.to.join(','),
           subject: mail.subject,
-          htmlbody: mail.body.to_s,
+          htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
+          textbody: mail.multipart? ? (mail.text_part ? mail.text_part.body.decoded : nil) : nil,
           cc: mail.cc&.join(','),
           bcc: mail.bcc&.join(','),
           replyto: mail.reply_to
