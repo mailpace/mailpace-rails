@@ -27,8 +27,9 @@ module OhMySMTP
           textbody: mail.multipart? ? (mail.text_part ? mail.text_part.body.decoded : nil) : nil,
           cc: mail.cc&.join(','),
           bcc: mail.bcc&.join(','),
-          replyto: mail.reply_to
-        }.to_json,
+          replyto: mail.reply_to,
+          attachments: format_attachments(mail.attachments)
+        }.compact.to_json,
         headers: {
           'User-Agent' => "OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}",
           'Accept' => 'application/json',
@@ -60,6 +61,17 @@ module OhMySMTP
       # TODO: Improved error handling
       res = result.parsed_response
       raise res['error']&.to_s || res['errors']&.to_s
+    end
+
+    def format_attachments(attachments)
+      attachments.map do |attachment|
+        {
+          name: attachment.filename,
+          content_type: attachment.mime_type,
+          content: Base64.encode64(attachment.body.encoded),
+          cid: attachment.content_id
+        }.compact
+      end
     end
   end
 end
