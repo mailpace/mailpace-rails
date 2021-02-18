@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ohmysmtp-rails (0.1.2)
+    ohmysmtp-rails (0.1.3)
       actionmailer (>= 3.0.0)
       httparty (>= 0.18.1)
 
