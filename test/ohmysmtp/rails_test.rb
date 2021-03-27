@@ -78,5 +78,17 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
     end
   end
 
-  # TODO: Test replyto, bcc, cc, subject, from, to etc.
+  test 'supports full names in the from address' do
+    t = FullNameMailer.full_name_email
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['from'] == 'My Full Name <notifications@example.com>'
+    end
+  end
+
+  # TODO: Test replyto, bcc, cc, subject, to etc.
 end

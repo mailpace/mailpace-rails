@@ -87,6 +87,10 @@ For support please check the [OhMySMTP Documentation](https://docs.ohmysmtp.com)
 
 ## Contributing
 
+Please ensure to add a test for any change you make. To run the tests:
+
+`bin/test`
+
 Pull requests always welcome
 
 ## License

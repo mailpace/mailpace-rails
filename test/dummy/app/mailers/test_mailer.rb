@@ -1,5 +1,3 @@
-require 'pry'
-
 class TestMailer < ApplicationMailer
   default from: 'notifications@example.com',
           to: 'fake@sdfasdfsdaf.com'

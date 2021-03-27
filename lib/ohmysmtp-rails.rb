@@ -20,7 +20,7 @@ module OhMySMTP
       result = HTTParty.post(
         'https://app.ohmysmtp.com/api/v1/send',
         body: {
-          from: mail.from.join(','),
+          from: mail.from_address.to_s,
           to: mail.to.join(','),
           subject: mail.subject,
           htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
