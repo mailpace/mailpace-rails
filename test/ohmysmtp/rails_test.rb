@@ -90,5 +90,29 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
     end
   end
 
+  test 'supports single tag' do
+    t = TagMailer.single_tag
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['tags'] == 'test tag'
+    end
+  end
+
+  test 'supports array of tags tag' do
+    t = TagMailer.multi_tag
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['tags'] == "['test tag', 'another-tag']"
+    end
+  end
+
   # TODO: Test replyto, bcc, cc, subject, to etc.
 end

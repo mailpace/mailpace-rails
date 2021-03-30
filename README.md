@@ -81,6 +81,31 @@ config.action_mailer.delivery_method = :ohmysmtp
 config.action_mailer.ohmysmtp_settings = { :api_token => Rails.application.secrets.ohmysmtp_api_token }
 ```
 
+## Tagging
+
+You can tag messages and filter them later in the OhMySMTP UI. To do this, pass the tags as a header by adding a tag variable to your `mail` method call.
+
+```ruby
+class TestMailer < ApplicationMailer
+  default from: 'notifications@example.com',
+          to: 'fake@sdfasdfsdaf.com'
+
+  def single_tag
+    mail(
+      tags: 'test tag' # One tag
+    )
+  end
+
+  def multi_tag
+    mail(
+      tags: "['test tag', 'another-tag']" # Multiple tags
+    )
+  end
+end
+```
+
+Note that this should always be a string, even if using an array of multiple tags.
+
 ## Support
 
 For support please check the [OhMySMTP Documentation](https://docs.ohmysmtp.com)  or contact us at support@ohmysmtp.com

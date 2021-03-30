@@ -28,7 +28,8 @@ module OhMySMTP
           cc: mail.cc&.join(','),
           bcc: mail.bcc&.join(','),
           replyto: mail.reply_to,
-          attachments: format_attachments(mail.attachments)
+          attachments: format_attachments(mail.attachments),
+          tags: mail.header['tags'].to_s
         }.compact.to_json,
         headers: {
           'User-Agent' => "OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}",
