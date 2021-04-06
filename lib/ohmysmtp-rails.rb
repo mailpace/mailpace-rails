@@ -30,7 +30,7 @@ module OhMySMTP
           replyto: mail.reply_to,
           attachments: format_attachments(mail.attachments),
           tags: mail.header['tags'].to_s
-        }.compact.to_json,
+        }.compact_blank.to_json,
         headers: {
           'User-Agent' => "OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}",
           'Accept' => 'application/json',

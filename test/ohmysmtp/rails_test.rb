@@ -114,5 +114,17 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
     end
   end
 
+  test 'does not send tags if tags not supplied' do
+    t = TestMailer.welcome_email
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['tags'].nil?
+    end
+  end
+
   # TODO: Test replyto, bcc, cc, subject, to etc.
 end
