@@ -14,7 +14,7 @@ jobs:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
       RAILS_ENV: test
-      RAILS_TEST_VERSION: "=5.2.5"
+      RAILS_TEST_VERSION: "5.2.5"
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout 
