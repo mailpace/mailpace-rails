@@ -1,0 +1,44 @@
+version: 2.1 # Use 2.1 to enable using orbs and other features.
+
+# Declare the orbs that we'll use in our config.
+# read more about orbs: https://circleci.com/docs/2.0/using-orbs/
+orbs:
+  ruby: circleci/ruby@1.0 
+
+jobs:
+  'rails-5': 
+    docker:
+      - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
+    # environment variables specific to Ruby/Rails, applied to the primary container.
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      RAILS_ENV: test
+    # A series of steps to run, some are similar to those in "build".
+    steps:
+      - checkout 
+      - ruby/install-deps # HOW TO PASS RAILS v5 into deps here
+      - bin/test
+
+jobs:
+  'rails-latest': 
+    docker:
+      - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
+    # environment variables specific to Ruby/Rails, applied to the primary container.
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      RAILS_ENV: test
+    # A series of steps to run, some are similar to those in "build".
+    steps:
+      - checkout 
+      - ruby/install-deps
+      - bin/test
+
+# We use workflows to orchestrate the jobs that we declared above.
+workflows:
+  version: 2
+  build_and_test:     # The name of our workflow is "build_and_test"
+    jobs:             # The list of jobs we run as part of this workflow.
+      - 'rails-5'
+      - 'rails-latest'
