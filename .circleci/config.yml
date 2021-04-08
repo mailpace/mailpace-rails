@@ -20,7 +20,6 @@ jobs:
       - ruby/install-deps # HOW TO PASS RAILS v5 into deps here
       - bin/test
 
-jobs:
   'rails-latest': 
     docker:
       - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
