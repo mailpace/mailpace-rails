@@ -6,7 +6,7 @@ orbs:
   ruby: circleci/ruby@1.0 
 
 jobs:
-  'rails-5-2': 
+  'rails-5-2':
     docker:
       - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
     # environment variables specific to Ruby/Rails, applied to the primary container.
@@ -19,11 +19,12 @@ jobs:
     steps:
       - checkout 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - ruby/install-deps
+      - ruby/install-deps:
+          with-cache: false
       - run: bundle show
       - run: bin/test
 
-  'rails-6-1': 
+  'rails-6-1':
     docker:
       - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
     # environment variables specific to Ruby/Rails, applied to the primary container.
@@ -35,7 +36,8 @@ jobs:
     steps:
       - checkout 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - ruby/install-deps
+      - ruby/install-deps:
+          with-cache: false
       - run: bundle show
       - run: bin/test
 
