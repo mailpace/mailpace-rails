@@ -44,33 +44,10 @@ jobs:
       - run: bundle show
       - run: bin/test
 
-
-  'rails-4-2':
-    docker:
-      - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
-    # environment variables specific to Ruby/Rails, applied to the primary container.
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      RAILS_ENV: test
-      RAILS_TEST_VERSION: "4.2.6"
-    # A series of steps to run, some are similar to those in "build".
-    steps:
-      - checkout 
-      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - run: bundle update
-      - run: bundle install
-      - ruby/install-deps:
-          with-cache: false
-      - run: bundle show
-      - run: bin/test
-
-
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
   version: 2
   build_and_test:     # The name of our workflow is "build_and_test"
     jobs:             # The list of jobs we run as part of this workflow.
       - 'rails-5-2'
-      - 'rails-4-2'
       - 'rails-6-1'
