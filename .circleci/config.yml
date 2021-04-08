@@ -17,6 +17,7 @@ jobs:
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout 
+      - run: gem install sqlite3 -v '1.4.2' --source 'https://rubygems.org/'
       - ruby/install-deps # HOW TO PASS RAILS v5 into deps here
       - run: bin/test
 
@@ -31,7 +32,7 @@ jobs:
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout 
-      - ruby/install-deps
+      - run: gem install sqlite3 -v '1.4.2' --source 'https://rubygems.org/'
       - run: bin/test
 
 # We use workflows to orchestrate the jobs that we declared above.
