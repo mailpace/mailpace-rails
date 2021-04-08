@@ -18,7 +18,7 @@ jobs:
     steps:
       - checkout 
       - ruby/install-deps # HOW TO PASS RAILS v5 into deps here
-      - bin/test
+      - run: bin/test
 
   'rails-latest': 
     docker:
@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout 
       - ruby/install-deps
-      - bin/test
+      - run: bin/test
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
