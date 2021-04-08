@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Gem Version](https://badge.fury.io/rb/ohmysmtp-rails.svg)](https://badge.fury.io/rb/ohmysmtp-rails)
-
+[![OhMySMTP Rails](https://circleci.com/gh/ohmysmtp/ohmysmtp-rails.svg?style=svg)](https://app.circleci.com/pipelines/github/ohmysmtp/ohmysmtp-rails)
 
 [OhMySMTP](https://ohmysmtp.com) lets you send transactional emails from your app over an easy to use API.
 
