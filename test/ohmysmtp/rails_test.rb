@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'pry'
 
 class OhMySMTP::Rails::Test < ActiveSupport::TestCase
   setup do

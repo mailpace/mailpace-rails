@@ -16,15 +16,9 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_development_dependency "rails"
-
   spec.add_dependency('actionmailer', ">= 3.0.0")
-
   spec.add_dependency('httparty', '>= 0.18.1')
-
-  spec.add_development_dependency('byebug')
-
-  spec.add_development_dependency('pry')
-
-  spec.add_development_dependency "sqlite3"
+  
+  spec.add_development_dependency "rails", ">=6.1.3.1"
+  spec.add_development_dependency "sqlite3", ">=1.4.2"
 end
