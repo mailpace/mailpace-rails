@@ -108,7 +108,20 @@ Note that this should always be a string, even if using an array of multiple tag
 
 ## List-Unsubscribe
 
-To add a List-Unsubscribe header: ``
+To add a List-Unsubscribe header, pass a `list_unsubscribe` string to the `mail` function:
+
+```ruby
+class TestMailer < ApplicationMailer
+  default from: 'notifications@example.com',
+          to: 'fake@sdfasdfsdaf.com'
+
+  def list_unsub_header
+    mail(
+      list_unsubscribe: 'https://listunsublink.com'
+    )
+  end
+end
+```
 
 ## Support
 
