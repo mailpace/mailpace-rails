@@ -106,6 +106,10 @@ end
 
 Note that this should always be a string, even if using an array of multiple tags.
 
+## List-Unsubscribe
+
+To add a List-Unsubscribe header: ``
+
 ## Support
 
 For support please check the [OhMySMTP Documentation](https://docs.ohmysmtp.com)  or contact us at support@ohmysmtp.com

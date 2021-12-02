@@ -12,7 +12,7 @@ module OhMySMTP
 
     def initialize(values)
       check_api_token(values)
-      self.settings = {}.merge!(values)
+      self.settings = { return_response: true }.merge!(values)
     end
 
     def deliver!(mail)
@@ -24,10 +24,13 @@ module OhMySMTP
           to: mail.to.join(','),
           subject: mail.subject,
           htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
-          textbody: mail.multipart? ? (mail.text_part ? mail.text_part.body.decoded : nil) : nil,
+          textbody: if mail.multipart?
+                      mail.text_part ? mail.text_part.body.decoded : nil
+                    end,
           cc: mail.cc&.join(','),
           bcc: mail.bcc&.join(','),
           replyto: mail.reply_to,
+          list_unsubscribe: mail.header['list_unsubscribe'].to_s,
           attachments: format_attachments(mail.attachments),
           tags: mail.header['tags'].to_s
         }.delete_if { |_key, value| value.blank? }.to_json,
@@ -57,7 +60,7 @@ module OhMySMTP
     end
 
     def handle_response(result)
-      return unless result.code != 200
+      return result unless result.code != 200
 
       # TODO: Improved error handling
       res = result.parsed_response

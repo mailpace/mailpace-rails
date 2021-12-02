@@ -2,7 +2,7 @@ require 'test_helper'
 
 class OhMySMTP::Rails::Test < ActiveSupport::TestCase
   setup do
-    ActionMailer::Base::delivery_method = :ohmysmtp
+    ActionMailer::Base.delivery_method = :ohmysmtp
     ActionMailer::Base.ohmysmtp_settings = { api_token: 'api_token' }
 
     stub_request(:post, 'https://app.ohmysmtp.com/api/v1/send')
@@ -25,7 +25,7 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
   end
 
   test 'raises ArgumentError if no api token set' do
-    ActionMailer::Base.ohmysmtp_settings = { }
+    ActionMailer::Base.ohmysmtp_settings = {}
     assert_raise(ArgumentError) { @test_email.deliver! }
   end
 
@@ -123,6 +123,24 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
     ) do |req|
       JSON.parse(req.body)['tags'].nil?
     end
+  end
+
+  test 'supports List-Unsubscribe header' do
+    t = ListUnsubscribeMailer.unsubscribe
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['list_unsubscribe'] == 'test list-unsubscribe'
+    end
+  end
+
+  test 'deliver! returns the API response' do
+    t = TestMailer.welcome_email
+    res = t.deliver!
+    assert_equal res['id'], 1
   end
 
   # TODO: Test replyto, bcc, cc, subject, to etc.
