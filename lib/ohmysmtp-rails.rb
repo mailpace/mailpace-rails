@@ -1,11 +1,12 @@
 require 'action_mailer'
+require 'action_mailbox/engine'
 require 'httparty'
 require 'uri'
 require 'json'
 require 'ohmysmtp-rails/version'
-require 'ohmysmtp-rails/railtie' if defined? Rails
+require 'ohmysmtp-rails/engine' if defined? Rails
 
-module OhMySMTP
+module Ohmysmtp
   # OhMySMTP ActionMailer delivery method
   class DeliveryMethod
     attr_accessor :settings
@@ -35,7 +36,7 @@ module OhMySMTP
           tags: mail.header['tags'].to_s
         }.delete_if { |_key, value| value.blank? }.to_json,
         headers: {
-          'User-Agent' => "OhMySMTP Rails Gem v#{OhMySMTP::Rails::VERSION}",
+          'User-Agent' => "OhMySMTP Rails Gem v#{Ohmysmtp::Rails::VERSION}",
           'Accept' => 'application/json',
           'Content-Type' => 'application/json',
           'Ohmysmtp-Server-Token' => settings[:api_token]
@@ -77,5 +78,11 @@ module OhMySMTP
         }.compact
       end
     end
+  end
+
+  class Error < StandardError; end
+
+  def self.root
+    Pathname.new(File.expand_path(File.join(__dir__, '..')))
   end
 end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OhMySMTP::Rails::Test < ActiveSupport::TestCase
+class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
   setup do
     ActionMailer::Base.delivery_method = :ohmysmtp
     ActionMailer::Base.ohmysmtp_settings = { api_token: 'api_token' }
@@ -16,7 +16,7 @@ class OhMySMTP::Rails::Test < ActiveSupport::TestCase
   end
 
   test 'truth' do
-    assert_kind_of Module, OhMySMTP::Rails
+    assert_kind_of Module, Ohmysmtp::Rails
   end
 
   test 'api token can be set' do
