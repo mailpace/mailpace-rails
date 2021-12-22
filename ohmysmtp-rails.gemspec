@@ -6,7 +6,7 @@ require "ohmysmtp-rails/version"
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
   spec.name        = "ohmysmtp-rails"
-  spec.version     = OhMySMTP::Rails::VERSION
+  spec.version     = Ohmysmtp::Rails::VERSION
   spec.authors     = ["OhMySMTP"]
   spec.email       = ["support@ohmysmtp.com"]
   spec.homepage    = "https://ohmysmtp.com"
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency('actionmailer', ">= 3.0.0")
+  spec.add_dependency('actionmailer', ">= 6.0.0")
   spec.add_dependency('httparty', '>= 0.18.1')
 
   spec.add_development_dependency "rails", "#{ENV['RAILS_TEST_VERSION'] || '>=6.1.4.1'}"

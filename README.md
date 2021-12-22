@@ -8,11 +8,13 @@
 
 The OhMySMTP Rails Gem is a plug in for ActionMailer to send emails via [OhMySMTP](https://ohmysmtp.com) to make sending emails from Rails apps super simple.
 
-## Usage
+> **New in 0.3.0: The ability to consume [inbound emails](https://docs.ohmysmtp.com/guide/inbound/) from OhMySMTP via ActionMailbox**
 
-Once installed and configured, continue to send emails using [ActionMailer](https://guides.rubyonrails.org/action_mailer_basics.html) like normal.
+##  Usage
 
-## Requirements
+Once installed and configured, continue to send emails using [ActionMailer](https://guides.rubyonrails.org/action_mailer_basics.html) and receive emails with [ActionMailbox](https://edgeguides.rubyonrails.org/action_mailbox_basics.html) like normal.
+
+## Other Requirements
 
 You will need an OhMySMTP account with a verified domain and organization with an active plan.
 
@@ -42,9 +44,7 @@ $ gem install ohmysmtp-rails
 
 ### Configure the Gem
 
-First you will need to retrieve your API token for your sending domain from [OhMySMTP](https://app.ohmysmtp.com). You can find it under Organization -> Domain -> API Tokens
-
-#### Rails 6
+First you will need to retrieve your API token for your sending domain from [OhMySMTP](https://app.ohmysmtp.com). You can find it under Organization -> Domain -> API Tokens.
 
 Use the encrypted secret management to save your API Token to `config/credentials.yml.enc` by running the following:
 
@@ -64,21 +64,6 @@ Set OhMySMTP as your mail delivery method in `config/application.rb`:
 ```ruby
 config.action_mailer.delivery_method = :ohmysmtp
 config.action_mailer.ohmysmtp_settings = { api_token: Rails.application.credentials.ohmysmtp_api_token }
-```
-
-#### Rails 3-5
-
-Save your API Token to `config/secrets.yml` using a text editor:
-
-```yaml
-ohmysmtp_api_token: "TOKEN_GOES_HERE"
-```
-
-Set OhMySMTP as your mail delivery method in `config/application.rb`:
-
-```ruby
-config.action_mailer.delivery_method = :ohmysmtp
-config.action_mailer.ohmysmtp_settings = { :api_token => Rails.application.secrets.ohmysmtp_api_token }
 ```
 
 ## Tagging
@@ -123,6 +108,30 @@ class TestMailer < ApplicationMailer
 end
 ```
 
+## ActionMailbox setup (for receiving inbound emails)
+
+As of v0.3.0, this Gem supports handling Inbound Emails (see https://docs.ohmysmtp.com/guide/inbound/ for details) via ActionMailbox. To setup:
+
+1. Tell Action Mailbox to accept emails from OhMySMTP in config/environments/production.rb
+
+```ruby
+config.action_mailbox.ingress = :ohmysmtp
+```
+
+2. Generate a strong password that Action Mailbox can use to authenticate requests to the OhMySMTP ingress.
+Use `bin/rails credentials:edit` to add the password to your application's encrypted credentials under `action_mailbox.ingress_password`, where Action Mailbox will automatically find it:
+
+```yaml
+action_mailbox:
+  ingress_password: ...
+```
+
+Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD` environment variable.
+
+3. Configure OhMySMTP see [inbound docs](https://docs.ohmysmtp.com/guide/inbound) to forward inbound emails
+to `/rails/action_mailbox/ohmysmtp/inbound_emails` with the username `actionmailbox` and the password you previously generated. If your application lived at `https://example.com` you would configure your OhMySMTP inbound endpoint URL with the following fully-qualified URL:
+
+`https://actionmailbox:PASSWORD@example.com/rails/action_mailbox/ohmysmtp/inbound_emails`
 ## Support
 
 For support please check the [OhMySMTP Documentation](https://docs.ohmysmtp.com)  or contact us at support@ohmysmtp.com

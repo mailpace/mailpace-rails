@@ -46,6 +46,8 @@ Rails.application.configure do
     api_token: Rails.application.credentials.ohmysmtp_api_token
   }
 
+  config.action_mailbox.ingress = :ohmysmtp
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
