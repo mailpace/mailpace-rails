@@ -19,7 +19,7 @@ jobs:
     steps:
       - checkout 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - run: bundle install
+      - run: bundle update && bundle install
       - ruby/install-deps:
           with-cache: false
       - run: bundle show
@@ -38,7 +38,7 @@ jobs:
     steps:
       - checkout 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - run: bundle install
+      - run: bundle update && bundle install
       - ruby/install-deps:
           with-cache: false
       - run: bundle show
