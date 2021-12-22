@@ -108,11 +108,11 @@ class TestMailer < ApplicationMailer
 end
 ```
 
-## ActionMailbox setup (for receiving inbound emails)
+## ActionMailbox (for receiving inbound emails)
 
-As of v0.3.0, this Gem supports handling Inbound Emails (see https://docs.ohmysmtp.com/guide/inbound/ for details) via ActionMailbox. To setup:
+As of v0.3.0, this Gem supports handling Inbound Emails (see https://docs.ohmysmtp.com/guide/inbound/ for more details) via ActionMailbox. To set this up:
 
-1. Tell Action Mailbox to accept emails from OhMySMTP in config/environments/production.rb
+1. Tell Action Mailbox to accept emails from OhMySMTP in `config/environments/production.rb`
 
 ```ruby
 config.action_mailbox.ingress = :ohmysmtp
@@ -128,10 +128,11 @@ action_mailbox:
 
 Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD` environment variable.
 
-3. Configure OhMySMTP see [inbound docs](https://docs.ohmysmtp.com/guide/inbound) to forward inbound emails
-to `/rails/action_mailbox/ohmysmtp/inbound_emails` with the username `actionmailbox` and the password you previously generated. If your application lived at `https://example.com` you would configure your OhMySMTP inbound endpoint URL with the following fully-qualified URL:
+3. Configure OhMySMTP to forward inbound emails to `/rails/action_mailbox/ohmysmtp/inbound_emails` with the username `actionmailbox` and the password you previously generated. If your application lived at `https://example.com` you would configure your OhMySMTP inbound endpoint URL with the following fully-qualified URL:
 
 `https://actionmailbox:PASSWORD@example.com/rails/action_mailbox/ohmysmtp/inbound_emails`
+
+That's it! Emails should start flowing into your app just like magic.
 ## Support
 
 For support please check the [OhMySMTP Documentation](https://docs.ohmysmtp.com)  or contact us at support@ohmysmtp.com
