@@ -1,17 +1,17 @@
 $:.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
-require "ohmysmtp-rails/version"
+require "mailpace-rails/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
-  spec.name        = "ohmysmtp-rails"
-  spec.version     = Ohmysmtp::Rails::VERSION
-  spec.authors     = ["OhMySMTP"]
-  spec.email       = ["support@ohmysmtp.com"]
-  spec.homepage    = "https://ohmysmtp.com"
+  spec.name        = "mailpace-rails"
+  spec.version     = Mailpace::Rails::VERSION
+  spec.authors     = ["MailPace"]
+  spec.email       = ["support@mailpace.com"]
+  spec.homepage    = "https://mailpace.com"
   spec.summary     = "Lets you send transactional emails from your app over an easy to use API"
-  spec.description = "The OhMySMTP Rails Gem is a plug in for ActionMailer to send emails via OhMySMTP to make sending emails from Rails apps super simple."
+  spec.description = "The MailPace Rails Gem is a plug in for ActionMailer to send emails via MailPace to make sending emails from Rails apps super simple."
   spec.license     = "MIT"
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

@@ -13,7 +13,7 @@ class Email
   end
 
   def url
-    '/rails/action_mailbox/ohmysmtp/inbound_emails'
+    '/rails/action_mailbox/mailpace/inbound_emails'
   end
 
   def params

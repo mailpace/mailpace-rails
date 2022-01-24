@@ -3,11 +3,11 @@ require 'action_mailbox/engine'
 require 'httparty'
 require 'uri'
 require 'json'
-require 'ohmysmtp-rails/version'
-require 'ohmysmtp-rails/engine' if defined? Rails
+require 'mailpace-rails/version'
+require 'mailpace-rails/engine' if defined? Rails
 
-module Ohmysmtp
-  # OhMySMTP ActionMailer delivery method
+module Mailpace
+  # MailPace ActionMailer delivery method
   class DeliveryMethod
     attr_accessor :settings
 
@@ -19,7 +19,7 @@ module Ohmysmtp
     def deliver!(mail)
       check_delivery_params(mail)
       result = HTTParty.post(
-        'https://app.ohmysmtp.com/api/v1/send',
+        'https://app.mailpace.com/api/v1/send',
         body: {
           from: mail.header[:from]&.address_list&.addresses&.first.to_s,
           to: mail.to.join(','),
@@ -36,10 +36,10 @@ module Ohmysmtp
           tags: mail.header['tags'].to_s
         }.delete_if { |_key, value| value.blank? }.to_json,
         headers: {
-          'User-Agent' => "OhMySMTP Rails Gem v#{Ohmysmtp::Rails::VERSION}",
+          'User-Agent' => "MailPace Rails Gem v#{Mailpace::Rails::VERSION}",
           'Accept' => 'application/json',
           'Content-Type' => 'application/json',
-          'Ohmysmtp-Server-Token' => settings[:api_token]
+          'Mailpace-Server-Token' => settings[:api_token]
         }
       )
 
@@ -51,7 +51,7 @@ module Ohmysmtp
     def check_api_token(values)
       return if values[:api_token].present?
 
-      raise ArgumentError, 'OhMySMTP API token is not set'
+      raise ArgumentError, 'MailPace API token is not set'
     end
 
     def check_delivery_params(mail)

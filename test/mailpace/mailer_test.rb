@@ -1,11 +1,11 @@
 require 'test_helper'
 
-class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
+class Mailpace::Rails::Test < ActiveSupport::TestCase
   setup do
-    ActionMailer::Base.delivery_method = :ohmysmtp
-    ActionMailer::Base.ohmysmtp_settings = { api_token: 'api_token' }
+    ActionMailer::Base.delivery_method = :mailpace
+    ActionMailer::Base.mailpace_settings = { api_token: 'api_token' }
 
-    stub_request(:post, 'https://app.ohmysmtp.com/api/v1/send')
+    stub_request(:post, 'https://app.mailpace.com/api/v1/send')
       .to_return(
         body: { "status": 'queued', "id": 1 }.to_json,
         headers: { content_type: 'application/json' },
@@ -16,16 +16,16 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
   end
 
   test 'truth' do
-    assert_kind_of Module, Ohmysmtp::Rails
+    assert_kind_of Module, Mailpace::Rails
   end
 
   test 'api token can be set' do
-    ActionMailer::Base.ohmysmtp_settings = { api_token: 'api-token' }
-    assert_equal ActionMailer::Base.ohmysmtp_settings[:api_token], 'api-token'
+    ActionMailer::Base.mailpace_settings = { api_token: 'api-token' }
+    assert_equal ActionMailer::Base.mailpace_settings[:api_token], 'api-token'
   end
 
   test 'raises ArgumentError if no api token set' do
-    ActionMailer::Base.ohmysmtp_settings = {}
+    ActionMailer::Base.mailpace_settings = {}
     assert_raise(ArgumentError) { @test_email.deliver! }
   end
 
@@ -53,7 +53,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       attachments = JSON.parse(req.body)['attachments']
@@ -70,7 +70,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       JSON.parse(req.body)['attachments'][0]['content_type'] == 'custom/type'
@@ -82,7 +82,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       JSON.parse(req.body)['from'] == 'My Full Name <notifications@example.com>'
@@ -94,7 +94,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       JSON.parse(req.body)['tags'] == 'test tag'
@@ -106,7 +106,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       JSON.parse(req.body)['tags'] == "['test tag', 'another-tag']"
@@ -118,7 +118,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       JSON.parse(req.body)['tags'].nil?
@@ -130,7 +130,7 @@ class Ohmysmtp::Rails::Test < ActiveSupport::TestCase
     t.deliver!
 
     assert_requested(
-      :post, 'https://app.ohmysmtp.com/api/v1/send',
+      :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
       JSON.parse(req.body)['list_unsubscribe'] == 'test list-unsubscribe'

@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'ohmysmtp/email_helper'
+require 'mailpace/email_helper'
 
-class OhmysmtpIngressTest < ActionDispatch::IntegrationTest
+class MailpaceIngressTest < ActionDispatch::IntegrationTest
   test 'ingress has been set' do
-    assert_equal :ohmysmtp, ActionMailbox.ingress
+    assert_equal :mailpace, ActionMailbox.ingress
   end
 
   test 'accept an email' do

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ohmysmtp-rails (0.3.0)
+    mailpace-rails (0.3.0)
       actionmailer (>= 6.0.0)
       httparty (>= 0.18.1)
 
@@ -158,7 +158,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  ohmysmtp-rails!
+  mailpace-rails!
   rails (>= 6.1.4.1)
   sprockets-rails
   sqlite3 (>= 1.4.2)

@@ -3,7 +3,7 @@ require_relative 'boot'
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require 'ohmysmtp-rails'
+require 'mailpace-rails'
 
 module Dummy
   class Application < Rails::Application
