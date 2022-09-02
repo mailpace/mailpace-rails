@@ -30,7 +30,7 @@ module Mailpace
                     end,
           cc: mail.cc&.join(','),
           bcc: mail.bcc&.join(','),
-          replyto: mail.reply_to,
+          replyto: mail.reply_to&.join(','),
           list_unsubscribe: mail.header['list_unsubscribe'].to_s,
           attachments: format_attachments(mail.attachments),
           tags: mail.header['tags'].to_s

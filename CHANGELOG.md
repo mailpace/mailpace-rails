@@ -1,3 +1,7 @@
+# 0.3.1
+
+- Fix bug with ReplyTo attribute
+
 # 0.3.0
 
 - Dropped support for applications older than Rails 6

@@ -143,5 +143,19 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     assert_equal res['id'], 1
   end
 
-  # TODO: Test replyto, bcc, cc, subject, to etc.
+  # See https://github.com/mikel/mail/blob/22a7afc23f253319965bf9228a0a430eec94e06d/lib/mail/fields/reply_to_field.rb
+  test 'supports reply to' do
+    t = TestMailer.welcome_email
+    t.reply_to = 'This will be stripped <reply@test.com>'
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['replyto'] == 'reply@test.com'
+    end
+  end
+
+  # TODO: Test bcc, cc, subject, to etc.
 end
