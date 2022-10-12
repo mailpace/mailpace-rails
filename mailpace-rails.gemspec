@@ -14,6 +14,9 @@ Gem::Specification.new do |spec|
   spec.description = "The MailPace Rails Gem is a plug in for ActionMailer to send emails via MailPace to make sending emails from Rails apps super simple."
   spec.license     = "MIT"
 
+  spec.metadata['source_code_uri'] = 'https://github.com/mailpace/mailpace-rails'
+  spec.metadata['changelog_uri'] = 'https://github.com/mailpace/mailpace-rails/blob/master/CHANGELOG.md'
+
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency('actionmailer', ">= 6.0.0")
