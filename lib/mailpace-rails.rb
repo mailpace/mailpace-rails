@@ -28,8 +28,8 @@ module Mailpace
           textbody: if mail.multipart?
                       mail.text_part ? mail.text_part.body.decoded : nil
                     end,
-          cc: mail.cc&.join(','),
-          bcc: mail.bcc&.join(','),
+          cc: address_list(mail.header[:cc])&.addresses&.join(','),
+          bcc: address_list(mail.header[:bcc])&.addresses&.join(','),
           replyto: mail.reply_to&.join(','),
           list_unsubscribe: mail.header['list_unsubscribe'].to_s,
           attachments: format_attachments(mail.attachments),

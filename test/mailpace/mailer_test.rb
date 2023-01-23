@@ -157,5 +157,18 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     end
   end
 
-  # TODO: Test bcc, cc, subject, to etc.
+  test 'supports complex cc and bcc entries' do
+    t = ComplexMailer.complex_email
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['cc'] == 'test@test.com,full name cc <test2@test.com>' &&
+        JSON.parse(req.body)['bcc'] == 'full name bcc <test2@test.com>'
+    end
+  end
+
+  # TODO: subject, to etc.
 end
