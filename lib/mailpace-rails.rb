@@ -21,7 +21,7 @@ module Mailpace
       result = HTTParty.post(
         'https://app.mailpace.com/api/v1/send',
         body: {
-          from: mail.header[:from]&.address_list&.addresses&.first.to_s,
+          from: address_list(mail.header[:from])&.addresses&.first.to_s,
           to: mail.to.join(','),
           subject: mail.subject,
           htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
@@ -76,6 +76,16 @@ module Mailpace
           content: Base64.encode64(attachment.body.encoded),
           cid: attachment.content_id
         }.compact
+      end
+    end
+
+    def address_list(obj)
+      if obj&.respond_to?(:element)
+        # Mail 2.8+
+        obj.element
+      else
+        # Mail <= 2.7.x
+        obj&.address_list
       end
     end
   end

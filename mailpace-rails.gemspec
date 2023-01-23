@@ -22,6 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency('actionmailer', ">= 6.0.0")
   spec.add_dependency('httparty', '>= 0.18.1')
 
-  spec.add_development_dependency "rails", "#{ENV['RAILS_TEST_VERSION'] || '>=6.1.4.1'}"
+  spec.add_development_dependency "rails", "#{ENV['RAILS_TEST_VERSION'] || '>=7.0.4.1'}"
   spec.add_development_dependency "sqlite3", ">=1.4.2"
 end
