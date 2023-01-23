@@ -1,3 +1,8 @@
+# 0.3.2
+
+- Support for Rails 7.0.4.1, which uses Mail 2.8 under the hood
+- Support adding 
+
 # 0.3.1
 
 - Fix bug with ReplyTo attribute
