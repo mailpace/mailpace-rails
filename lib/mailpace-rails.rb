@@ -63,9 +63,10 @@ module Mailpace
     def handle_response(result)
       return result unless result.code != 200
 
-      # TODO: Improved error handling
-      res = result.parsed_response
-      raise res['error']&.to_s || res['errors']&.to_s
+      parsed_response = result.parsed_response
+      error_message = join_error_messages(parsed_response)
+
+      raise DeliveryError, "MAILPACE Error: #{error_message}" unless error_message.empty?
     end
 
     def format_attachments(attachments)
@@ -88,9 +89,15 @@ module Mailpace
         obj&.address_list
       end
     end
+
+    def join_error_messages(response)
+      # Join 'error' and 'errors' keys from response into a single string
+      [response['error'], response['errors']].compact.join(', ')
+    end
   end
 
   class Error < StandardError; end
+  class DeliveryError < StandardError; end
 
   def self.root
     Pathname.new(File.expand_path(File.join(__dir__, '..')))
