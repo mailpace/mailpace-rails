@@ -20,7 +20,7 @@ You will need an MailPace account with a verified domain and organization with a
 
 ## Installation
 
-### Account Setup 
+### Account Setup
 
 Set up an account at [MailPace](https://app.mailpace.com/users/sign_up) and complete the Onboarding steps
 
@@ -103,6 +103,27 @@ class TestMailer < ApplicationMailer
   def list_unsub_header
     mail(
       list_unsubscribe: 'https://listunsublink.com'
+    )
+  end
+end
+```
+
+## Idempotent Requests
+
+Mailpace supports idempotency for safely retrying requests without accidentally sending the same email twice. This is useful to guarantee that an email is not sent to the same recipient multiple times, e.g. through a network error, or a bug in your application logic.
+
+To do this, when sending an email, you generate and add a unique `idempotency_key`:
+
+```ruby
+class TestMailer < ApplicationMailer
+  default from: 'notifications@example.com'
+
+
+  def idempotent_mail
+    email = 'fake@sdfasdfsdaf.com'
+    mail(
+      to: email,
+      idempotency_key: Digest::SHA256.hexdigest("#{email}-#{Time.now.to_i / 3600}")
     )
   end
 end
