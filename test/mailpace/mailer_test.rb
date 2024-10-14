@@ -170,6 +170,22 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     end
   end
 
+  test 'raises DeliveryError if response is not 200' do
+    stub_request(:post, 'https://app.mailpace.com/api/v1/send')
+      .to_return(
+        body: { error: 'contains a blocked address' }.to_json,
+        headers: { content_type: 'application/json' },
+        status: 400
+      )
+
+    t = TestMailer.welcome_email
+
+    assert_raise(Mailpace::DeliveryError, 'MAILPACE Error: contains a blocked address') do
+      t.deliver!
+
+    end
+  end
+
   test 'supports in-reply-to' do
     t = TestMailer.welcome_email
     t.in_reply_to = '<message-id@test.com>'
