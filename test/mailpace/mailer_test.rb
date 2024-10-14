@@ -182,6 +182,46 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
 
     assert_raise(Mailpace::DeliveryError, 'MAILPACE Error: contains a blocked address') do
       t.deliver!
+
+    end
+  end
+
+  test 'supports in-reply-to' do
+    t = TestMailer.welcome_email
+    t.in_reply_to = '<message-id@test.com>'
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['inreplyto'] == '<message-id@test.com>'
+    end
+  end
+
+  test 'supports single references' do
+    t = TestMailer.welcome_email
+    t.references = '<message-id@test.com>'
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['references'] == '<message-id@test.com>'
+    end
+  end
+
+  test 'supports multiple references' do
+    t = TestMailer.welcome_email
+    t.references = '<message-id@test.com> <message-id2@test.com>'
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['references'] == '<message-id@test.com> <message-id2@test.com>'
     end
   end
 

@@ -20,8 +20,11 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency('actionmailer', ">= 6.0.0")
+  spec.add_dependency('actionmailbox', ">= 6.0.0")
+  spec.add_dependency('activestorage', ">= 6.0.0")
+
   spec.add_dependency('httparty', '>= 0.18.1')
 
-  spec.add_development_dependency "rails", "#{ENV['RAILS_TEST_VERSION'] || '>=7.0.4.1'}"
+  spec.add_development_dependency "rails", "#{ENV['RAILS_TEST_VERSION'] || '>=7.2.0'}"
   spec.add_development_dependency "sqlite3", ">=1.4.2"
 end
