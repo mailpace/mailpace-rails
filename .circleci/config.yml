@@ -43,6 +43,45 @@ jobs:
           with-cache: false
       - run: bundle show
       - run: bin/test
+  
+
+  'rails-7-2':
+    docker:
+      - image: cimg/ruby:3.2.5-node # this is our primary docker image, where step commands run.
+    # environment variables specific to Ruby/Rails, applied to the primary container.
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      RAILS_ENV: test
+      RAILS_TEST_VERSION: "7.2.1"
+    # A series of steps to run, some are similar to those in "build".
+    steps:
+      - checkout 
+      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
+      - run: bundle update && bundle install
+      - ruby/install-deps:
+          with-cache: false
+      - run: bundle show
+      - run: bin/test
+
+  'rails-8-0':
+    docker:
+      - image: cimg/ruby:3.2.5-node # this is our primary docker image, where step commands run.
+    # environment variables specific to Ruby/Rails, applied to the primary container.
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      RAILS_ENV: test
+      RAILS_TEST_VERSION: "8.0.0.beta1"
+    # A series of steps to run, some are similar to those in "build".
+    steps:
+      - checkout 
+      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
+      - run: bundle update && bundle install
+      - ruby/install-deps:
+          with-cache: false
+      - run: bundle show
+      - run: bin/test  
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
@@ -51,3 +90,5 @@ workflows:
     jobs:             # The list of jobs we run as part of this workflow.
       - 'rails-6-1'
       - 'rails-7-0'
+      - 'rails-7-2'
+      - 'rails-8-0'
