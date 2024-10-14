@@ -182,7 +182,6 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
 
     assert_raise(Mailpace::DeliveryError, 'MAILPACE Error: contains a blocked address') do
       t.deliver!
-
     end
   end
 
@@ -222,6 +221,31 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
       times: 1
     ) do |req|
       JSON.parse(req.body)['references'] == '<message-id@test.com> <message-id2@test.com>'
+    end
+  end
+
+  test 'supports setting idempotency key directly' do
+    t = TestMailer.welcome_email
+    t.header['idempotency_key'] = 'example key'
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      req.headers['Idempotency-Key'] == 'example key'
+    end
+  end
+
+  test 'supports email with idempotency key set' do
+    t = IdempotentMailer.idempotent_email
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      req.headers['Idempotency-Key'] == 'example key'
     end
   end
 

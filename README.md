@@ -8,6 +8,8 @@
 
 The MailPace Rails Gem is a plug in for ActionMailer to send emails via [MailPace](https://mailpace.com) to make sending emails from Rails apps super simple.
 
+> **New in 0.4.0: [Idempotent Requests](https://docs.mailpace.com/guide/idempotency/), Improved Error Handling, InReplyTo and References support**
+
 > **New in 0.3.0: The ability to consume [inbound emails](https://docs.mailpace.com/guide/inbound/) from MailPace via ActionMailbox**
 
 ##  Usage
@@ -133,6 +135,26 @@ Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD` enviro
 `https://actionmailbox:PASSWORD@example.com/rails/action_mailbox/mailpace/inbound_emails`
 
 That's it! Emails should start flowing into your app just like magic.
+
+## Idempotent Requests
+
+Mailpace supports [idempotency](https://docs.mailpace.com/guide/idempotency) for safely retrying requests without accidentally sending the same email twice. This is useful to guarantee that an email is not sent to the same recipient multiple times, e.g. through a network error, or a bug in your application logic.
+
+To do this, when writing your mailer, generate and add a unique `idempotency_key`:
+
+```ruby
+class TestMailer < ApplicationMailer
+  default from: 'notifications@example.com'
+  def idempotent_mail
+    email = 'email@example.com'
+    mail(
+      to: email,
+      idempotency_key: Digest::SHA256.hexdigest("#{email}-#{Time.now.to_i / 3600}")
+    )
+  end
+end
+```
+
 ## Support
 
 For support please check the [MailPace Documentation](https://docs.mailpace.com)  or contact us at support@mailpace.com
