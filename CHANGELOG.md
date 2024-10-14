@@ -1,7 +1,7 @@
 # 0.4.0
 
 - Add support for `InReplyTo` and `References` headers
-- Now raises a `Mailpace::DeliveryError` on failure (thanks @dpaluy)
+- Now raises a `Mailpace::DeliveryError` on failure (thanks to [@dpaluy](https://github.com/dpaluy))
 - Idempotent Requests (https://docs.mailpace.com/guide/idempotency/)
 - Now tested against Rails 7.2, 8.0.0 and Ruby 3.2
 - Declares a dependency on actionmailbox and activestorage (resolves https://github.com/mailpace/mailpace-rails/issues/27) 
