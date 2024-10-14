@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mailpace-rails (0.3.2)
+    mailpace-rails (0.4.0)
       actionmailbox (>= 6.0.0)
       actionmailer (>= 6.0.0)
       activestorage (>= 6.0.0)
@@ -249,4 +249,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.5.16
+   2.4.15
