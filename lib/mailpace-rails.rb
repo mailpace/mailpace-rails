@@ -31,6 +31,8 @@ module Mailpace
           cc: address_list(mail.header[:cc])&.addresses&.join(','),
           bcc: address_list(mail.header[:bcc])&.addresses&.join(','),
           replyto: mail.reply_to&.join(','),
+          inreplyto: mail.header['In-Reply-To'].to_s,
+          references: mail.header['References'].to_s,
           list_unsubscribe: mail.header['list_unsubscribe'].to_s,
           attachments: format_attachments(mail.attachments),
           tags: mail.header['tags'].to_s
