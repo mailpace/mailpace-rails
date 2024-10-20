@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mailpace-rails (0.4.0)
+    mailpace-rails (0.4.1)
       actionmailbox (>= 6.0.0)
       actionmailer (>= 6.0.0)
       activestorage (>= 6.0.0)
