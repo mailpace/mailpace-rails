@@ -1,3 +1,7 @@
+# 0.4.1
+
+- Fix bug where Idempotent Key is set to '', when not set
+
 # 0.4.0
 
 - Add support for `InReplyTo` and `References` headers

@@ -43,6 +43,11 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
 
   test 'send basic emails to endpoint' do
     @test_email.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    )
   end
 
   test 'supports multiple attachments' do
@@ -249,5 +254,14 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     end
   end
 
-  # TODO: subject, to etc.
+  test 'idempotency key is not in the request if it is not set in the email' do
+    @test_email.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      req.headers['Idempotency-Key'].nil?
+    end
+  end
 end
