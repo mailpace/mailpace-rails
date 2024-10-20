@@ -41,9 +41,10 @@ module Mailpace
           'User-Agent' => "MailPace Rails Gem v#{Mailpace::Rails::VERSION}",
           'Accept' => 'application/json',
           'Content-Type' => 'application/json',
-          'Mailpace-Server-Token' => settings[:api_token],
-          'Idempotency-Key' => mail.header['idempotency_key'].to_s
-        }
+          'Mailpace-Server-Token' => settings[:api_token]
+        }.tap do |h|
+          h['Idempotency-Key'] = mail.header['idempotency_key'].to_s if mail.header['idempotency_key']
+        end
       )
 
       handle_response(result)
