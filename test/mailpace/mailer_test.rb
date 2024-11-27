@@ -163,14 +163,14 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
   # See https://github.com/mikel/mail/blob/22a7afc23f253319965bf9228a0a430eec94e06d/lib/mail/fields/reply_to_field.rb
   test 'supports reply to' do
     t = TestMailer.welcome_email
-    t.reply_to = 'This will be stripped <reply@test.com>'
+    t.reply_to = 'Reply To Name <reply@test.com>'
     t.deliver!
 
     assert_requested(
       :post, 'https://app.mailpace.com/api/v1/send',
       times: 1
     ) do |req|
-      JSON.parse(req.body)['replyto'] == 'reply@test.com'
+      JSON.parse(req.body)['replyto'] == 'Reply To Name <reply@test.com>'
     end
   end
 
