@@ -94,6 +94,18 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     end
   end
 
+  test 'supports full names in the to address' do
+    t = FullNameMailer.full_name_email
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['to'] == 'Recipient Full Name <fake@sdfasdfsdaf.com>'
+    end
+  end
+
   test 'supports single tag' do
     t = TagMailer.single_tag
     t.deliver!

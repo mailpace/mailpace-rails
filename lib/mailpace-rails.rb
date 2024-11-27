@@ -22,7 +22,7 @@ module Mailpace
         'https://app.mailpace.com/api/v1/send',
         body: {
           from: address_list(mail.header[:from])&.addresses&.first.to_s,
-          to: mail.to.join(','),
+          to: address_list(mail.header[:to])&.addresses&.join(','),
           subject: mail.subject,
           htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
           textbody: if mail.multipart?
