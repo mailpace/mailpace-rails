@@ -22,7 +22,7 @@ module Mailpace
         'https://app.mailpace.com/api/v1/send',
         body: {
           from: address_list(mail.header[:from])&.addresses&.first.to_s,
-          to: mail.to.join(','),
+          to: address_list(mail.header[:to])&.addresses&.join(','),
           subject: mail.subject,
           htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
           textbody: if mail.multipart?
@@ -30,7 +30,7 @@ module Mailpace
                     end,
           cc: address_list(mail.header[:cc])&.addresses&.join(','),
           bcc: address_list(mail.header[:bcc])&.addresses&.join(','),
-          replyto: mail.reply_to&.join(','),
+          replyto: address_list(mail.header[:reply_to])&.addresses&.join(','),
           inreplyto: mail.header['In-Reply-To'].to_s,
           references: mail.header['References'].to_s,
           list_unsubscribe: mail.header['list_unsubscribe'].to_s,
