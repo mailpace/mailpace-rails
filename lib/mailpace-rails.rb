@@ -17,6 +17,15 @@ module Mailpace
     end
 
     def deliver!(mail)
+      if mail.multipart?
+        htmlbody = mail.html_part.body.decoded,
+        textbody = mail.text_part.body.decoded
+      elsif mail.mime_type == "text/plain"
+        textbody = mail.body.to_s
+      else
+        htmlbody = mail.body.to_s
+      end
+
       check_delivery_params(mail)
       result = HTTParty.post(
         'https://app.mailpace.com/api/v1/send',
@@ -24,10 +33,8 @@ module Mailpace
           from: address_list(mail.header[:from])&.addresses&.first.to_s,
           to: address_list(mail.header[:to])&.addresses&.join(','),
           subject: mail.subject,
-          htmlbody: mail.html_part ? mail.html_part.body.decoded : mail.body.to_s,
-          textbody: if mail.multipart?
-                      mail.text_part ? mail.text_part.body.decoded : nil
-                    end,
+          htmlbody:,
+          textbody:,
           cc: address_list(mail.header[:cc])&.addresses&.join(','),
           bcc: address_list(mail.header[:bcc])&.addresses&.join(','),
           replyto: address_list(mail.header[:reply_to])&.addresses&.join(','),
