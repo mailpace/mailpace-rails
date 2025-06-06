@@ -155,6 +155,10 @@ class TestMailer < ApplicationMailer
 end
 ```
 
+## ActiveStorage Configuration
+
+This gem depends on ActiveStorage for handling inbound emails. If you do not have ActiveStorage configured in your Rails App you may need to create an empty file `config/storage.yml` for this Gem to work. 
+
 ## Support
 
 For support please check the [MailPace Documentation](https://docs.mailpace.com)  or contact us at support@mailpace.com
