@@ -66,13 +66,13 @@ jobs:
 
   'rails-8-0':
     docker:
-      - image: cimg/ruby:3.2.5-node # this is our primary docker image, where step commands run.
+      - image: cimg/ruby:3.4.4-node # this is our primary docker image, where step commands run.
     # environment variables specific to Ruby/Rails, applied to the primary container.
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
       RAILS_ENV: test
-      RAILS_TEST_VERSION: "8.0.0.beta1"
+      RAILS_TEST_VERSION: "8.0.2"
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout 

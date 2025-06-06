@@ -1,3 +1,10 @@
+# 0.4.2
+
+- Send text-only if not multipart and content-type is text/plain (thanks [@zachasme](https://github.com/zachasme))
+- Support full names in To / Reply To addresses (thanks [@lazyatom](https://github.com/lazyatom))
+- Support multiple reply to addresses (thanks [@lazyatom](https://github.com/lazyatom))
+- CI now tests against latest versions of Rails (8.0.2) and Ruby (3.4.4)
+
 # 0.4.1
 
 - Fix bug where Idempotent Key is set to '', when not set
