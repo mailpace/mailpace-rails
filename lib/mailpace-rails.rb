@@ -18,8 +18,8 @@ module Mailpace
 
     def deliver!(mail)
       if mail.multipart?
-        htmlbody = mail.html_part.body.decoded,
-        textbody = mail.text_part.body.decoded
+        htmlbody = mail.html_part&.body&.decoded
+        textbody = mail.text_part&.body&.decoded
       elsif mail.mime_type == "text/plain"
         textbody = mail.body.to_s
       else

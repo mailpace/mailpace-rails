@@ -290,4 +290,45 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
         JSON.parse(req.body)['textbody'] == "test text only\n"
     end
   end
+
+  test 'supports html-only emails' do
+    t = HtmlMailer.html_only_email
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      !JSON.parse(req.body)['htmlbody'].nil? &&
+        JSON.parse(req.body)['textbody'].nil?
+    end
+  end
+
+  test 'supports multipart emails without a text part' do
+    t = MultipartMailer.no_text_email
+    assert t.multipart?
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      !JSON.parse(req.body)['htmlbody'].nil? &&
+        JSON.parse(req.body)['textbody'].nil?
+    end
+  end
+
+  test 'supports multipart emails without an html part' do
+    t = MultipartMailer.no_html_email
+    assert t.multipart?
+    t.deliver!
+
+    assert_requested(
+      :post, 'https://app.mailpace.com/api/v1/send',
+      times: 1
+    ) do |req|
+      JSON.parse(req.body)['htmlbody'].nil? &&
+        !JSON.parse(req.body)['textbody'].nil?
+    end
+  end
 end
