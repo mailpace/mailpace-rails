@@ -1,3 +1,7 @@
+# 0.4.3
+
+- Fix regression for html only multipart emails (thanks [@excid3](https://github.com/excid3)
+
 # 0.4.2
 
 - Send text-only if not multipart and content-type is text/plain (thanks [@zachasme](https://github.com/zachasme))
