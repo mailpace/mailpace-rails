@@ -8,6 +8,8 @@
 
 The MailPace Rails Gem is a plug in for ActionMailer to send emails via [MailPace](https://mailpace.com) to make sending emails from Rails apps super simple.
 
+> **New in 0.5.0: The `httparty` dependency has been removed — requests now use Ruby's built-in `Net::HTTP`, and the delivery response stays backward compatible**
+
 > **New in 0.4.0: [Idempotent Requests](https://docs.mailpace.com/guide/idempotency/), Improved Error Handling, InReplyTo and References support**
 
 > **New in 0.3.0: The ability to consume [inbound emails](https://docs.mailpace.com/guide/inbound/) from MailPace via ActionMailbox**
