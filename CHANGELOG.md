@@ -1,5 +1,8 @@
-# Unreleased
+# 0.5.0
 
+- Remove the `httparty` runtime dependency; requests are now made with `Net::HTTP` from the standard library. Thanks [@okuramasafumi](https://github.com/okuramasafumi) for the original change and [@izkreny](https://github.com/izkreny) for identifying the httparty/json 3.0 error-handling breakage that motivated it
+- Keep the delivery response backward compatible: `mail.deliver!` / `deliver_now!` still return an `HTTParty::Response`-compatible object, so `res['id']`, `res.parsed_response`, `res.code`, `res.body`, `res.headers` and status helpers such as `res.success?` keep working
+- Failures now always raise `Mailpace::DeliveryError`. Previously a non-200 response without an `error` key returned `nil`, and a non-JSON error body raised `JSON::ParserError` (thanks [@excid3](https://github.com/excid3) for the review)
 - Register the delivery method via `ActiveSupport.on_load(:action_mailer)` so the gem no longer loads `ActionMailer::Base` during boot, which silently disabled lazy route loading in Rails 8 development (thanks [@excid3](https://github.com/excid3))
 
 # 0.4.3

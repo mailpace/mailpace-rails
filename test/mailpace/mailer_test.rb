@@ -160,6 +160,34 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     assert_equal res['id'], 1
   end
 
+  test 'the response is compatible with the previous HTTParty::Response' do
+    res = TestMailer.welcome_email.deliver!
+
+    # Body access, in each of the forms the old object supported
+    assert_equal 1, res['id']
+    assert_equal 'queued', res['status']
+    assert_equal({ 'status' => 'queued', 'id' => 1 }, res.parsed_response)
+    assert_equal({ 'status' => 'queued', 'id' => 1 }, res.to_hash)
+    assert_equal({ 'status' => 'queued', 'id' => 1 }, JSON.parse(res.body))
+
+    # Status helpers
+    assert_equal 200, res.code
+    assert res.success?
+    assert res.ok?
+    refute res.nil?
+
+    # Headers keep HTTParty's case-insensitive, joined-value lookups
+    assert_equal 'application/json', res.headers['Content-Type']
+    assert_equal 'application/json', res.headers['content-type']
+  end
+
+  test 'deliver_now! returns the same response object' do
+    res = TestMailer.welcome_email.deliver_now!
+
+    assert_equal 1, res['id']
+    assert_equal 200, res.code
+  end
+
   # See https://github.com/mikel/mail/blob/22a7afc23f253319965bf9228a0a430eec94e06d/lib/mail/fields/reply_to_field.rb
   test 'supports reply to' do
     t = TestMailer.welcome_email
@@ -200,6 +228,42 @@ class Mailpace::Rails::Test < ActiveSupport::TestCase
     assert_raise(Mailpace::DeliveryError, 'MAILPACE Error: contains a blocked address') do
       t.deliver!
     end
+  end
+
+  test 'raises DeliveryError with the API message for a JSON error response' do
+    stub_request(:post, 'https://app.mailpace.com/api/v1/send')
+      .to_return(
+        body: { error: 'contains a blocked address' }.to_json,
+        headers: { content_type: 'application/json' },
+        status: 400
+      )
+
+    error = assert_raises(Mailpace::DeliveryError) { TestMailer.welcome_email.deliver! }
+    assert_equal 'MAILPACE Error: contains a blocked address', error.message
+  end
+
+  test 'raises DeliveryError, not JSON::ParserError, when the error body is not JSON' do
+    stub_request(:post, 'https://app.mailpace.com/api/v1/send')
+      .to_return(
+        body: '<html>Bad Gateway</html>',
+        headers: { content_type: 'text/html' },
+        status: 502
+      )
+
+    error = assert_raises(Mailpace::DeliveryError) { TestMailer.welcome_email.deliver! }
+    assert_equal 'MAILPACE Error: HTTP 502', error.message
+  end
+
+  test 'raises DeliveryError when a non-200 response carries no error message' do
+    stub_request(:post, 'https://app.mailpace.com/api/v1/send')
+      .to_return(
+        body: '{}',
+        headers: { content_type: 'application/json' },
+        status: 503
+      )
+
+    error = assert_raises(Mailpace::DeliveryError) { TestMailer.welcome_email.deliver! }
+    assert_equal 'MAILPACE Error: HTTP 503', error.message
   end
 
   test 'supports in-reply-to' do
