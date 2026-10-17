@@ -1,3 +1,7 @@
+# Unreleased
+
+- Register the delivery method via `ActiveSupport.on_load(:action_mailer)` so the gem no longer loads `ActionMailer::Base` during boot, which silently disabled lazy route loading in Rails 8 development (thanks [@excid3](https://github.com/excid3))
+
 # 0.4.3
 
 - Fix regression for html only multipart emails (thanks [@excid3](https://github.com/excid3)
