@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Gem Version](https://badge.fury.io/rb/mailpace-rails.svg)](https://badge.fury.io/rb/mailpace-rails)
-[![MailPace Rails](https://circleci.com/gh/mailpace/mailpace-rails.svg?style=svg)](https://app.circleci.com/pipelines/github/mailpace/mailpace-rails)
+[![CI](https://github.com/mailpace/mailpace-rails/actions/workflows/ci.yml/badge.svg)](https://github.com/mailpace/mailpace-rails/actions/workflows/ci.yml)
 
 [MailPace](https://mailpace.com) lets you send transactional emails from your app over an easy to use API.
 
